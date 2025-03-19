@@ -1,0 +1,54 @@
+#include<stdio.h>
+
+void main()
+{
+    int n;
+    printf("Enter the number of processes\n");
+    scanf("%d",&n);
+    int at[n],bt[n],wt[n],tt[n],q[n],twt=0,ttt=0;
+    float awt,att;
+    printf("Enter the burst time of all the processes\n");
+    for(int i=0;i<n;i++)
+    {
+        printf("Burst Time of P%d:",i+1);
+        scanf("%d",&bt[i]);
+    }
+    printf("Enter the number of the queue of all the processes\n");
+    for(int i=0;i<n;i++)
+    {
+        printf("Queue Number of P%d:",i+1);
+        scanf("%d",&q[i]);
+    }
+    for(int i=0;i<n;i++)
+    {
+        for(int j=i+1;j<n;j++)
+        {
+            if(q[j]<q[i])
+            {
+                int temp=q[j];
+                q[j]=q[i];
+                q[i]=temp;
+
+                int tempBT=bt[j];
+                bt[j]=bt[i];
+                bt[i]=tempBT;
+            }
+        }
+    }
+    wt[0]=0;
+    tt[0]=bt[0];
+    printf("\nBurst Time\tQueue Number\tWaiting Time\tTurnaround Time\n");
+    printf("%d\t\t%d\t\t%d\t\t%d\n", bt[0],q[0],wt[0], tt[0]);
+    for(int i=1;i<n;i++)
+    {
+        wt[i]=bt[i-1]+wt[i-1];
+        tt[i]=bt[i]+wt[i];
+        twt=twt+wt[i];
+        ttt=ttt+tt[i];
+        printf("%d\t\t%d\t\t%d\t\t%d\n", bt[i],q[i], wt[i], tt[i]);
+    }
+    awt=(float)twt/n;
+    att=(float)(ttt+tt[0])/n;
+    printf("Average Waiting Time: %f\n",awt);
+    printf("Average Turn Around Time: %f\n",att);
+}
